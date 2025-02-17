@@ -22,7 +22,7 @@ impl TryFrom<&str> for LocationType {
             "store" => Ok(LocationType::Store),
             _ => Err(anyhow::anyhow!(
                 "{}: {}",
-                crate::error::messages::INVALID_LOCATION_TYPE_MSG,
+                crate::error::messages::INVALID_LOCATION_TYPE,
                 value
             )
             .into()),
@@ -103,7 +103,7 @@ mod tests {
         let err = result.unwrap_err();
         assert!(err
             .to_string()
-            .contains(crate::error::messages::INVALID_LOCATION_TYPE_MSG));
+            .contains(crate::error::messages::INVALID_LOCATION_TYPE));
     }
 
     #[rstest]

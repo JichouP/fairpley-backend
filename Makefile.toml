@@ -25,7 +25,7 @@ alias = "test"
 
 [tasks.test]
 description = "Run tests"
-dependencies = ["_test", "_grcov_html", "_grcov_lcov"]
+dependencies = ["_test", "_rm_coverage_dir", "_grcov_html", "_grcov_lcov"]
 
 [tasks.tbls]
 description = "Run tbls doc"
@@ -43,6 +43,11 @@ args = ["doc", "--no-deps", "--timings"]
 description = "Run tests"
 command = "cargo"
 args = ["test", "--timings"]
+
+[tasks._rm_coverage_dir]
+description = "Remove coverage directory"
+command = "rm"
+args = ["-rf", "./target/coverage/"]
 
 [tasks._grcov_html]
 description = "Generate coverage report in HTML format"
