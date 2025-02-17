@@ -1,0 +1,24 @@
+dsn: postgres://postgres:postgres@db:5432/mep?sslmode=disable
+docPath: doc/schema
+
+lint:
+  requireTableComment:
+    enabled: true
+  requireColumnComment:
+    enabled: true
+    exclude:
+      - id
+      - created_at
+      - updated_at
+      - deleted_at
+
+comments:
+  - table: _sqlx_migrations
+    tableComment: "マイグレーションの履歴"
+    columnComments:
+      version: "マイグレーションのバージョン"
+      description: "マイグレーションの説明"
+      installed_on: "マイグレーションが適用された日時"
+      success: "マイグレーションの適用が成功したかどうか"
+      checksum: "マイグレーションのチェックサム"
+      execution_time: "マイグレーションの実行にかかった時間 (ns)"
