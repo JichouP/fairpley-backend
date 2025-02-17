@@ -14,7 +14,11 @@
 				"files.watcherExclude": {
 					"**/target/**": true
 				},
-				"rust-analyzer.checkOnSave.command": "clippy"
+				"rust-analyzer.checkOnSave.command": "clippy",
+				"rust-analyzer.checkOnSave.extraArgs": [
+					"--target-dir",
+					"target/clippy"
+				]
 			},
 			"extensions": [
 				"ms-azuretools.vscode-docker",
