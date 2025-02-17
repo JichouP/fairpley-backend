@@ -13,19 +13,13 @@ on:
       - '**/README.md'
 
 env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_REGION: ap-northeast-1
-  BUFFER_SIZE: 8192
-  BUCKET_NAME: b-csl-test
-  DATABASE_URL: postgres://postgres:postgres@localhost:5432/mep
-  POSTGRES_DB: mep
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/shapley
+  POSTGRES_DB: shapley
   POSTGRES_PASSWORD: postgres
   POSTGRES_PORT: 5432
   POSTGRES_USER: postgres
   RUST_LOG: warn # sqlx のログなどが大量に出てブラウザがフリーズするので warn にしている
   RUST_BACKTRACE: 1
-  UPLOAD_DIR: tmp
 
 jobs:
   checks:
@@ -35,7 +29,7 @@ jobs:
       db:
         image: postgres:16.4-alpine3.20
         env:
-          POSTGRES_DB: mep
+          POSTGRES_DB: shapley
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
