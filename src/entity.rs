@@ -122,3 +122,50 @@ macro_rules! newtype {
 }
 
 use newtype;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    newtype! {
+        #[derive(Debug, PartialEq)]
+        struct TestInt(pub i32);
+    }
+
+    #[test]
+    fn test_newtype_basic_operations() {
+        let value = TestInt::new(42);
+
+        // as_inner のテスト
+        assert_eq!(*value.as_inner(), 42);
+
+        // mut_inner のテスト
+        let mut value = TestInt::new(42);
+        *value.mut_inner() += 1;
+        assert_eq!(*value.as_inner(), 43);
+
+        // into_inner のテスト
+        assert_eq!(value.into_inner(), 43);
+    }
+
+    #[test]
+    fn test_newtype_conversions() {
+        // From<i32> のテスト
+        let value: TestInt = 42.into();
+        assert_eq!(*value.as_inner(), 42);
+
+        // From<TestInt> のテスト
+        let original = TestInt::new(42);
+        let converted: i32 = original.into();
+        assert_eq!(converted, 42);
+
+        // AsRef<i32> のテスト
+        let value = TestInt::new(42);
+        assert_eq!(*value.as_ref(), 42);
+
+        // AsMut<i32> のテスト
+        let mut value = TestInt::new(42);
+        *value.as_mut() += 1;
+        assert_eq!(*value.as_inner(), 43);
+    }
+}

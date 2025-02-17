@@ -5,6 +5,7 @@ CREATE TABLE events
   id         uuid        NOT NULL,
   created_at timestamptz NOT NULL,
   updated_at timestamptz NOT NULL,
+  name       text        NOT NULL,
   started_at timestamptz NOT NULL,
   ended_at   timestamptz NOT NULL,
   PRIMARY KEY (id)
@@ -17,6 +18,8 @@ COMMENT ON COLUMN events.id IS 'Event ID';
 COMMENT ON COLUMN events.created_at IS '作成日時';
 
 COMMENT ON COLUMN events.updated_at IS '更新日時';
+
+COMMENT ON COLUMN events.name IS 'イベント名';
 
 COMMENT ON COLUMN events.started_at IS '開始日時';
 
@@ -57,6 +60,8 @@ CREATE TABLE purchases
   updated_at timestamptz NOT NULL,
   user_id    uuid        NOT NULL,
   event_id   uuid        NOT NULL,
+  name       text        NOT NULL,
+  price      integer     NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -71,6 +76,10 @@ COMMENT ON COLUMN purchases.updated_at IS '更新日時';
 COMMENT ON COLUMN purchases.user_id IS 'User ID';
 
 COMMENT ON COLUMN purchases.event_id IS 'Event ID';
+
+COMMENT ON COLUMN purchases.name IS '購入品目';
+
+COMMENT ON COLUMN purchases.price IS '金額';
 
 CREATE TABLE transports
 (
@@ -110,6 +119,8 @@ COMMENT ON COLUMN users.id IS 'User ID';
 COMMENT ON COLUMN users.created_at IS '作成日時';
 
 COMMENT ON COLUMN users.updated_at IS '更新日時';
+
+COMMENT ON COLUMN users.name IS 'ユーザー名';
 
 ALTER TABLE purchases
   ADD CONSTRAINT FK_events_TO_purchases

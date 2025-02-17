@@ -10,7 +10,7 @@ alias = "build"
 [tasks.build]
 description = "Build project"
 command = "cargo"
-args = ["build"]
+args = ["build", "--timings"]
 
 [tasks.w]
 alias = "watch"
@@ -37,12 +37,12 @@ alias = "doc"
 [tasks.doc]
 description = "Run cargo doc"
 command = "cargo"
-args = ["doc", "--no-deps"]
+args = ["doc", "--no-deps", "--timings"]
 
 [tasks._test]
 description = "Run tests"
 command = "cargo"
-args = ["test"]
+args = ["test", "--timings"]
 
 [tasks._grcov_html]
 description = "Generate coverage report in HTML format"
@@ -57,6 +57,8 @@ args = [
     "html",
     "--branch",
     "--ignore-not-existing",
+    "--keep-only",
+    "src/*",
     "-o",
     "./target/coverage/",
 ]

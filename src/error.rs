@@ -141,3 +141,121 @@ impl Failure {
         Self::Reject(Reject::unauthorized(message))
     }
 }
+
+// MARK: Tests
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rstest::rstest;
+
+    #[rstest]
+    #[case(
+        Reject::bad_request("不正な入力"),
+        RejectKind::BadRequest,
+        "不正な入力"
+    )]
+    #[case(
+        Reject::not_found("ユーザーが見つかりません"),
+        RejectKind::NotFound,
+        "ユーザーが見つかりません"
+    )]
+    #[case(
+        Reject::unauthorized("無効なトークン"),
+        RejectKind::Unauthorized,
+        "無効なトークン"
+    )]
+    fn test_reject_creation(
+        #[case] reject: Reject,
+        #[case] expected_kind: RejectKind,
+        #[case] expected_message: &str,
+    ) {
+        assert_eq!(reject.as_kind(), &expected_kind);
+        assert_eq!(reject.as_message(), expected_message);
+    }
+
+    #[rstest]
+    #[case(RejectKind::BadRequest, "Bad Request")]
+    #[case(RejectKind::NotFound, "Not Found")]
+    #[case(RejectKind::Unauthorized, "Unauthorized")]
+    fn test_reject_kind_display(#[case] kind: RejectKind, #[case] expected: &str) {
+        assert_eq!(kind.to_string(), expected);
+    }
+
+    #[rstest]
+    #[case(RejectKind::BadRequest, "エラーメッセージ")]
+    #[case(RejectKind::NotFound, "見つかりません")]
+    #[case(RejectKind::Unauthorized, "認証エラー")]
+    fn test_reject_into_parts(#[case] kind: RejectKind, #[case] message: &str) {
+        let reject = Reject::new(kind.clone(), message);
+        assert_eq!(reject.clone().into_kind(), kind);
+        assert_eq!(reject.into_message(), message);
+    }
+
+    #[rstest]
+    #[case(
+        Reject::bad_request("不正なリクエスト"),
+        "Bad Request: 不正なリクエスト"
+    )]
+    #[case(
+        Reject::not_found("ユーザーが見つかりません"),
+        "Not Found: ユーザーが見つかりません"
+    )]
+    #[case(Reject::unauthorized("認証が必要です"), "Unauthorized: 認証が必要です")]
+    fn test_reject_display_formatting(#[case] reject: Reject, #[case] expected: &str) {
+        assert_eq!(reject.to_string(), expected);
+    }
+
+    #[rstest]
+    #[case(
+        Failure::reject_bad_request("不正なリクエスト"),
+        RejectKind::BadRequest,
+        "不正なリクエスト"
+    )]
+    #[case(
+        Failure::reject_not_found("リソースが見つかりません"),
+        RejectKind::NotFound,
+        "リソースが見つかりません"
+    )]
+    #[case(
+        Failure::reject_unauthorized("認証が必要です"),
+        RejectKind::Unauthorized,
+        "認証が必要です"
+    )]
+    fn test_failure_helper_methods(
+        #[case] failure: Failure,
+        #[case] expected_kind: RejectKind,
+        #[case] expected_message: &str,
+    ) {
+        match failure {
+            Failure::Reject(reject) => {
+                assert_eq!(reject.as_kind(), &expected_kind);
+                assert_eq!(reject.as_message(), expected_message);
+            }
+            Failure::Error(_) => panic!("Expected Reject variant"),
+        }
+    }
+
+    #[rstest]
+    #[case(
+        Reject::bad_request("エラー").into(),
+        "Bad Request: エラー",
+        true
+    )]
+    #[case(
+        anyhow::anyhow!("システムエラー").into(),
+        "システムエラー",
+        false
+    )]
+    fn test_failure_variants(
+        #[case] failure: Failure,
+        #[case] expected_message: &str,
+        #[case] is_reject: bool,
+    ) {
+        assert_eq!(failure.to_string(), expected_message);
+        match failure {
+            Failure::Reject(_) => assert!(is_reject, "Expected Reject variant"),
+            Failure::Error(_) => assert!(!is_reject, "Expected Error variant"),
+        }
+    }
+}
