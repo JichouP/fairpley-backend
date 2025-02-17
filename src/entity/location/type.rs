@@ -20,21 +20,23 @@ impl TryFrom<&str> for LocationType {
             "home" => Ok(LocationType::Home),
             "other" => Ok(LocationType::Other),
             "store" => Ok(LocationType::Store),
-            _ => Err(crate::error::Failure::reject_bad_request(format!(
-                "無効なロケーションタイプです: {}",
+            _ => Err(anyhow::anyhow!(
+                "{}: {}",
+                crate::error::messages::INVALID_LOCATION_TYPE_MSG,
                 value
-            ))),
+            )
+            .into()),
         }
     }
 }
 
-impl From<&LocationType> for String {
-    fn from(value: &LocationType) -> Self {
-        match value {
-            LocationType::Campsite => "campsite".to_string(),
-            LocationType::Home => "home".to_string(),
-            LocationType::Other => "other".to_string(),
-            LocationType::Store => "store".to_string(),
+impl AsRef<str> for LocationType {
+    fn as_ref(&self) -> &str {
+        match self {
+            LocationType::Campsite => "campsite",
+            LocationType::Home => "home",
+            LocationType::Other => "other",
+            LocationType::Store => "store",
         }
     }
 }
@@ -44,8 +46,7 @@ impl Serialize for LocationType {
     where
         S: serde::Serializer,
     {
-        let r#type: String = self.into();
-        serializer.serialize_str(&r#type)
+        serializer.serialize_str(self.as_ref())
     }
 }
 
@@ -61,7 +62,78 @@ impl<'de> Deserialize<'de> for LocationType {
 
 impl ::core::fmt::Display for LocationType {
     fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        let r#type: String = self.into();
-        write!(f, "{}", r#type)
+        write!(f, "{}", self.as_ref())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rstest::rstest;
+
+    #[rstest]
+    #[case("campsite", LocationType::Campsite)]
+    #[case("home", LocationType::Home)]
+    #[case("other", LocationType::Other)]
+    #[case("store", LocationType::Store)]
+    fn test_try_from_str_valid(#[case] input: &str, #[case] expected: LocationType) {
+        let result = LocationType::try_from(input).unwrap();
+        assert_eq!(result, expected);
+    }
+
+    #[rstest]
+    #[case("\"campsite\"", LocationType::Campsite)]
+    #[case("\"home\"", LocationType::Home)]
+    #[case("\"other\"", LocationType::Other)]
+    #[case("\"store\"", LocationType::Store)]
+    fn test_deserialize_valid(#[case] json: &str, #[case] expected: LocationType) {
+        let deserialized: LocationType = serde_json::from_str(json).unwrap();
+        assert_eq!(deserialized, expected);
+    }
+
+    #[rstest]
+    #[case("")]
+    #[case("invalid")]
+    #[case("CAMPSITE")]
+    #[case("home ")]
+    #[case(" store")]
+    fn test_try_from_str_invalid(#[case] input: &str) {
+        let result = LocationType::try_from(input);
+        assert!(result.is_err());
+        let err = result.unwrap_err();
+        assert!(err
+            .to_string()
+            .contains(crate::error::messages::INVALID_LOCATION_TYPE_MSG));
+    }
+
+    #[rstest]
+    #[case("\"\"")]
+    #[case("\"invalid\"")]
+    #[case("\"STORE\"")]
+    #[case("null")]
+    #[case("123")]
+    #[case("{}")]
+    fn test_deserialize_invalid(#[case] invalid_json: &str) {
+        let result = serde_json::from_str::<LocationType>(invalid_json);
+        assert!(result.is_err());
+    }
+
+    #[rstest]
+    #[case(LocationType::Campsite, "\"campsite\"")]
+    #[case(LocationType::Home, "\"home\"")]
+    #[case(LocationType::Other, "\"other\"")]
+    #[case(LocationType::Store, "\"store\"")]
+    fn test_serialize(#[case] location_type: LocationType, #[case] expected: &str) {
+        let serialized = serde_json::to_string(&location_type).unwrap();
+        assert_eq!(serialized, expected);
+    }
+
+    #[rstest]
+    #[case(LocationType::Campsite, "campsite")]
+    #[case(LocationType::Home, "home")]
+    #[case(LocationType::Other, "other")]
+    #[case(LocationType::Store, "store")]
+    fn test_display(#[case] location_type: LocationType, #[case] expected: &str) {
+        assert_eq!(location_type.to_string(), expected);
     }
 }
