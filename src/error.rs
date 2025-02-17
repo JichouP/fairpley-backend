@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+pub mod messages;
+
 // MARK: Reject
 
 /// # Reject
@@ -95,6 +97,7 @@ impl std::fmt::Display for RejectKind {
 /// [`Failure::Reject`] 回復可能なエラー  
 /// [`Failure::Error`] 回復不能なエラー
 ///
+#[derive(Debug)]
 pub enum Failure<R = Reject, E = anyhow::Error> {
     Reject(R),
     Error(E),
