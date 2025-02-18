@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-pub mod messages;
-
 // MARK: Reject
 
 /// # Reject

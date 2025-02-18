@@ -20,12 +20,7 @@ impl TryFrom<&str> for LocationType {
             "home" => Ok(LocationType::Home),
             "other" => Ok(LocationType::Other),
             "store" => Ok(LocationType::Store),
-            _ => Err(anyhow::anyhow!(
-                "{}: {}",
-                crate::error::messages::INVALID_LOCATION_TYPE,
-                value
-            )
-            .into()),
+            _ => Err(anyhow::anyhow!("{}: {}", "Invalid location type", value).into()),
         }
     }
 }
@@ -101,9 +96,7 @@ mod tests {
         let result = LocationType::try_from(input);
         assert!(result.is_err());
         let err = result.unwrap_err();
-        assert!(err
-            .to_string()
-            .contains(crate::error::messages::INVALID_LOCATION_TYPE));
+        assert!(err.to_string().contains("Invalid location type"));
     }
 
     #[rstest]

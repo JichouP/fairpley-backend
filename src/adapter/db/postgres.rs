@@ -17,7 +17,7 @@ impl crate::service::db::DbAdapter for PostgresAdapter {
     async fn try_new_connection(url: &str) -> anyhow::Result<Self> {
         let pool = sqlx::PgPool::connect(url)
             .await
-            .context(crate::error::messages::FAILED_TO_CONNECT_TO_POSTGRES)?;
+            .context("Failed to connect to Postgres")?;
 
         tracing::info!("Connected to Postgres: {:?}", &pool);
 
@@ -28,7 +28,7 @@ impl crate::service::db::DbAdapter for PostgresAdapter {
         sqlx::migrate!("./migrations")
             .run(&self.pool)
             .await
-            .context(crate::error::messages::FAILED_TO_MIGRATE_POSTGRES)?;
+            .context("Failed to migrate Postgres")?;
 
         tracing::info!("Migration completed");
 
