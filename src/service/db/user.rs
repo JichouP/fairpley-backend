@@ -1,36 +1,90 @@
-pub struct SelectOneUser {
+pub struct UserRecord {
     pub id: uuid::Uuid,
     pub name: String,
     pub created_at: chrono::DateTime<chrono::Utc>,
     pub updated_at: chrono::DateTime<chrono::Utc>,
 }
 
-pub struct SelectOneUserResponse(SelectOneUser);
+pub struct SelectOneUserResponse(UserRecord);
 
-impl From<SelectOneUser> for SelectOneUserResponse {
-    fn from(value: SelectOneUser) -> Self {
+impl From<UserRecord> for SelectOneUserResponse {
+    fn from(value: UserRecord) -> Self {
         Self(value)
     }
 }
 
-pub type SelectManyUserResponseItem = SelectOneUser;
+impl SelectOneUserResponse {
+    pub fn as_inner(&self) -> &UserRecord {
+        &self.0
+    }
+}
+
+pub type SelectManyUserResponseItem = UserRecord;
 
 pub struct SelectManyUsersResponse(Vec<SelectManyUserResponseItem>);
+
+impl From<Vec<UserRecord>> for SelectManyUsersResponse {
+    fn from(values: Vec<UserRecord>) -> Self {
+        Self(values)
+    }
+}
+
+impl SelectManyUsersResponse {
+    pub fn as_inner(&self) -> &Vec<SelectManyUserResponseItem> {
+        &self.0
+    }
+}
 
 pub struct InsertOneUserRequest {
     pub id: crate::entity::user::id::UserId,
     pub name: String,
 }
 
-pub struct InsertOneUserResponse(SelectOneUser);
+pub struct InsertOneUserResponse(UserRecord);
+
+impl From<UserRecord> for InsertOneUserResponse {
+    fn from(value: UserRecord) -> Self {
+        Self(value)
+    }
+}
+
+impl InsertOneUserResponse {
+    pub fn as_inner(&self) -> &UserRecord {
+        &self.0
+    }
+}
 
 pub struct UpdateOneUserRequest {
     pub name: String,
 }
 
-pub struct UpdateOneUserResponse(SelectOneUser);
+pub struct UpdateOneUserResponse(UserRecord);
 
-pub struct DeleteOneUserResponse(SelectOneUser);
+impl From<UserRecord> for UpdateOneUserResponse {
+    fn from(value: UserRecord) -> Self {
+        Self(value)
+    }
+}
+
+impl UpdateOneUserResponse {
+    pub fn as_inner(&self) -> &UserRecord {
+        &self.0
+    }
+}
+
+pub struct DeleteOneUserResponse(UserRecord);
+
+impl From<UserRecord> for DeleteOneUserResponse {
+    fn from(value: UserRecord) -> Self {
+        Self(value)
+    }
+}
+
+impl DeleteOneUserResponse {
+    pub fn as_inner(&self) -> &UserRecord {
+        &self.0
+    }
+}
 
 pub trait DbUserAdapter: Clone + Send + Sync + 'static {
     fn select_one_user_by_id(
