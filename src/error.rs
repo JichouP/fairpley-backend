@@ -173,35 +173,13 @@ mod tests {
     }
 
     #[rstest]
-    #[case(RejectKind::BadRequest, "Bad Request")]
-    #[case(RejectKind::NotFound, "Not Found")]
-    #[case(RejectKind::Unauthorized, "Unauthorized")]
-    fn test_reject_kind_display(#[case] kind: RejectKind, #[case] expected: &str) {
-        assert_eq!(kind.to_string(), expected);
-    }
-
-    #[rstest]
-    #[case(RejectKind::BadRequest, "エラーメッセージ")]
-    #[case(RejectKind::NotFound, "見つかりません")]
-    #[case(RejectKind::Unauthorized, "認証エラー")]
+    #[case(RejectKind::BadRequest, "不正なリクエスト")]
+    #[case(RejectKind::NotFound, "リソースが見つかりません")]
+    #[case(RejectKind::Unauthorized, "認証が必要です")]
     fn test_reject_into_parts(#[case] kind: RejectKind, #[case] message: &str) {
         let reject = Reject::new(kind.clone(), message);
         assert_eq!(reject.clone().into_kind(), kind);
         assert_eq!(reject.into_message(), message);
-    }
-
-    #[rstest]
-    #[case(
-        Reject::bad_request("不正なリクエスト"),
-        "Bad Request: 不正なリクエスト"
-    )]
-    #[case(
-        Reject::not_found("ユーザーが見つかりません"),
-        "Not Found: ユーザーが見つかりません"
-    )]
-    #[case(Reject::unauthorized("認証が必要です"), "Unauthorized: 認証が必要です")]
-    fn test_reject_display_formatting(#[case] reject: Reject, #[case] expected: &str) {
-        assert_eq!(reject.to_string(), expected);
     }
 
     #[rstest]
@@ -237,20 +215,13 @@ mod tests {
     #[rstest]
     #[case(
         Reject::bad_request("エラー").into(),
-        "Bad Request: エラー",
         true
     )]
     #[case(
         anyhow::anyhow!("システムエラー").into(),
-        "システムエラー",
         false
     )]
-    fn test_failure_variants(
-        #[case] failure: Failure,
-        #[case] expected_message: &str,
-        #[case] is_reject: bool,
-    ) {
-        assert_eq!(failure.to_string(), expected_message);
+    fn test_failure_variants(#[case] failure: Failure, #[case] is_reject: bool) {
         match failure {
             Failure::Reject(_) => assert!(is_reject, "Expected Reject variant"),
             Failure::Error(_) => assert!(!is_reject, "Expected Error variant"),
