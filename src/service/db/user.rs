@@ -1,9 +1,4 @@
-pub struct UserRecord {
-    pub id: uuid::Uuid,
-    pub name: String,
-    pub created_at: chrono::DateTime<chrono::Utc>,
-    pub updated_at: chrono::DateTime<chrono::Utc>,
-}
+pub type UserRecord = crate::entity::user::User;
 
 pub struct SelectOneUserResponse(UserRecord);
 
