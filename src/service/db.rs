@@ -1,3 +1,7 @@
+pub mod event;
+pub mod location;
+pub mod purchase;
+pub mod transport;
 pub mod user;
 
 pub trait DbAdapter: Clone + Send + Sync + 'static {

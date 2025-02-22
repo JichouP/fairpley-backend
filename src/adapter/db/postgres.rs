@@ -1,5 +1,9 @@
 use anyhow::Context;
 
+pub mod event;
+pub mod location;
+pub mod purchase;
+pub mod transport;
 pub mod user;
 
 #[derive(Clone)]

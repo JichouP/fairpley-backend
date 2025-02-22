@@ -11,18 +11,16 @@ pub struct Transport {
     pub updated_at: DateTime<Utc>,
     pub name: String,
     pub r#type: String,
-    pub capacity: i32,
 }
 
 impl Transport {
-    pub fn new(name: String, r#type: String, capacity: i32) -> Self {
+    pub fn new(name: String, r#type: String) -> Self {
         Self {
             id: id::TransportId::new(uuid::Uuid::now_v7()),
             created_at: chrono::Utc::now(),
             updated_at: chrono::Utc::now(),
             name,
             r#type,
-            capacity,
         }
     }
 }
@@ -33,9 +31,8 @@ mod tests {
 
     #[test]
     fn test_transport_new() {
-        let transport = Transport::new("test_name".to_string(), "test_type".to_string(), 100);
+        let transport = Transport::new("test_name".to_string(), "test_type".to_string());
         assert_eq!(transport.name, "test_name");
         assert_eq!(transport.r#type, "test_type");
-        assert_eq!(transport.capacity, 100);
     }
 }
