@@ -13,8 +13,8 @@ on:
       - '**/README.md'
 
 env:
-  DATABASE_URL: postgres://postgres:postgres@localhost:5432/shapley
-  POSTGRES_DB: shapley
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/fairpley
+  POSTGRES_DB: fairpley
   POSTGRES_PASSWORD: postgres
   POSTGRES_PORT: 5432
   POSTGRES_USER: postgres
@@ -29,7 +29,7 @@ jobs:
       db:
         image: postgres:16.4-alpine3.20
         env:
-          POSTGRES_DB: shapley
+          POSTGRES_DB: fairpley
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
@@ -62,7 +62,7 @@ jobs:
       db:
         image: postgres:16.4-alpine3.20
         env:
-          POSTGRES_DB: mep
+          POSTGRES_DB: fairpley
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:

@@ -1,6 +1,6 @@
-# Shapley Backend
+# Fairpley Backend
 
-[![Build](https://github.com/JichouP/shapley-backend/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/JichouP/shapley-backend/actions/workflows/build.yml)
+[![Build](https://github.com/JichouP/fairpley-backend/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/JichouP/fairpley-backend/actions/workflows/build.yml)
 
 ## Develop
 

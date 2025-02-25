@@ -1,4 +1,4 @@
-dsn: postgres://postgres:postgres@db:5432/mep?sslmode=disable
+dsn: postgres://postgres:postgres@db:5432/fairpley?sslmode=disable
 docPath: doc/schema
 
 lint:
