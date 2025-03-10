@@ -126,13 +126,14 @@ use newtype;
 #[cfg(test)]
 mod tests {
     use super::*;
+    use rstest::rstest;
 
     newtype! {
         #[derive(Debug, PartialEq)]
         struct TestInt(pub i32);
     }
 
-    #[test]
+    #[rstest]
     fn test_newtype_basic_operations() {
         let value = TestInt::new(42);
 
@@ -148,7 +149,7 @@ mod tests {
         assert_eq!(value.into_inner(), 43);
     }
 
-    #[test]
+    #[rstest]
     fn test_newtype_conversions() {
         // From<i32> のテスト
         let value: TestInt = 42.into();
