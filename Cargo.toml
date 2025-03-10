@@ -16,7 +16,7 @@ aide = { version = "0.14.1", features = ["axum", "axum-json", "scalar"] }
 anyhow = { version = "1.0.97", features = ["backtrace"] }
 axum = { version = "0.8.1", features = ["macros"] }
 axum-macros = "0.5.0"
-bytes = "1.9.0"
+bytes = "1.10.1"
 chrono = { version = "0.4.40", features = ["serde"] }
 futures = "0.3.31"
 http = "1.2.0"
