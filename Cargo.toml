@@ -42,7 +42,7 @@ tower-http = { version = "0.6.2", features = [
     "cors",
     "normalize-path",
 ] }
-tokio-util = { version = "0.7.13", features = ["io"] }
+tokio-util = { version = "0.7.14", features = ["io"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 uuid = { version = "1.15.1", features = ["v7", "fast-rng", "serde"] }
