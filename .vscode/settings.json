@@ -11,5 +11,12 @@
     "coverage-gutters.showLineCoverage": true,
     "coverage-gutters.showRulerCoverage": true,
     "livePreview.portNumber": 3001,
-    "livePreview.defaultPreviewPath": "/target/coverage/index.html"
+    "livePreview.defaultPreviewPath": "/target/coverage/index.html",
+    "roo-cline.allowedCommands": [
+        "git log",
+        "git diff",
+        "git show",
+        "makers build",
+        "makers test"
+    ]
 }
