@@ -12,7 +12,7 @@ name = "lib"
 path = "src/lib.rs"
 
 [dependencies]
-aide = { version = "0.14.1", features = ["axum", "axum-json", "scalar"] }
+aide = { version = "0.14.2", features = ["axum", "axum-json", "scalar"] }
 anyhow = { version = "1.0.97", features = ["backtrace"] }
 axum = { version = "0.8.1", features = ["macros"] }
 axum-macros = "0.5.0"
@@ -21,7 +21,7 @@ chrono = { version = "0.4.40", features = ["serde"] }
 futures = "0.3.31"
 http = "1.2.0"
 http-body = "1.0.1"
-http-body-util = "0.1.2"
+http-body-util = "0.1.3"
 indexmap = "2.7.1"
 rstest = "0.25.0"
 schemars = { version = "0.8.22", features = ["chrono", "uuid1"] }
@@ -34,7 +34,7 @@ sqlx = { version = "0.8.3", features = [
     "chrono",
 ] }
 thiserror = "2.0.12"
-tokio = { version = "1.44.0", features = ["full"] }
+tokio = { version = "1.44.1", features = ["full"] }
 tower = { version = "0.5.2", features = ["util"] }
 tower-http = { version = "0.6.2", features = [
     "trace",
@@ -42,7 +42,7 @@ tower-http = { version = "0.6.2", features = [
     "cors",
     "normalize-path",
 ] }
-tokio-util = { version = "0.7.13", features = ["io"] }
+tokio-util = { version = "0.7.14", features = ["io"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 uuid = { version = "1.15.1", features = ["v7", "fast-rng", "serde"] }
