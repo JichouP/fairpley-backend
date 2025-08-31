@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: Kesin11/actions-timeline@v2
         if: ${{ github.event_name == 'pull_request' }} # 一番長い job にのみセットしたいため
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions-rust-lang/setup-rust-toolchain@v1
       - uses: taiki-e/install-action@v2
         with:
@@ -74,7 +74,7 @@ jobs:
           --health-retries 20
     steps:
       - uses: Kesin11/actions-timeline@v2
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions-rust-lang/setup-rust-toolchain@v1
       - uses: taiki-e/install-action@v2
         with:
@@ -112,5 +112,5 @@ jobs:
     name: lint Dockerfile
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: hadolint/hadolint-action@v3.1.0
