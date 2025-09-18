@@ -12,7 +12,7 @@ name = "lib"
 path = "src/lib.rs"
 
 [dependencies]
-aide = { version = "0.14.2", features = ["axum", "axum-json", "scalar"] }
+aide = { version = "0.15.1", features = ["axum", "axum-json", "scalar"] }
 anyhow = { version = "1.0.99", features = ["backtrace"] }
 axum = { version = "0.8.4", features = ["macros"] }
 axum-macros = "0.5.0"
